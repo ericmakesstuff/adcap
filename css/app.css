@@ -1,0 +1,38 @@
+.goal-row {
+    margin-bottom: 14px;
+}
+
+.jumbotron {
+    padding: 0;
+}
+
+.amount-input {
+    margin-bottom: 10px;
+}
+
+.close-calculator {
+    color: black;
+}
+
+.close-calculator:hover {
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+.progress-bar {
+    min-width: 2em;
+    font-size: 12pt;
+    padding: 2px;
+}
+
+.help-icon {
+    font-size: 12pt;
+    margin-left: 16px;
+}
+
+.complete {
+    font-size: 14pt;
+    color: blue;
+    margin-left: 14px;
+}
+

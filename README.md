@@ -1,0 +1,3 @@
+# adcap
+Adventure Capitalist Calculator
+

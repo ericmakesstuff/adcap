@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-el="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>AdCap Calculator</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/flat.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/justified-nav.css" rel="stylesheet">
+
+    <link href="css/app.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container" id="app">
+
+    <div class="jumbotron">
+        <h1><img src="img/AdVenture-Capitalist.png" style="width: 100px;" /> AdCap Calculator</h1>
+    </div>
+
+    <div v-for="calculator in calculators">
+        <calculator :calcid="calculator"></calculator>
+    </div>
+
+    <button class="btn btn-info btn-lg pull-right" @click="addCalculator">Add Calculator</button>
+
+</div> <!-- /container -->
+
+<template id="calculator-block">
+    <div class="well">
+        <div class="pull-right">
+            <tooltip trigger="hover" placement="top" content="Close This Calculator Block">
+                <a href="#" class="glyphicon glyphicon-remove-circle close-calculator" @click.prevent="closeCalculator"></a>
+            </tooltip>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <input class="form-control" placeholder="Name (Optional)" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <h3>$ / Time
+                    <tooltip trigger="hover" placement="right" content="Enter current values into each field below and hit Enter. Make sure End is more than Start!">
+                        <span class="glyphicon glyphicon-question-sign help-icon"></span>
+                    </tooltip>
+                </h3>
+                <div class="input-group input-group-lg amount-input">
+                    <span class="input-group-addon" id="sizing-addon1">$</span>
+                    <input type="text" class="form-control" placeholder="Start" aria-describedby="sizing-addon1" v-model="startAmount" @keyup.enter="submitStartAmount" autofocus>
+                </div>
+                <div class="input-group input-group-lg amount-input" v-bind:class="{ 'has-error': endAmountError }">
+                    <span class="input-group-addon" id="sizing-addon2">$</span>
+                        <input type="text" class="form-control" placeholder="End" aria-describedby="sizing-addon2" v-model="endAmount" @keyup.enter="submitEndAmount" v-bind:readonly="! startTime" v-el:endAmountInput>
+                </div>
+                <div v-show="perSecond">
+                    <div>Calculated: <div class="pull-right">{{ endTime | moment 'ddd, MMM D, h:mma' }}</div></div>
+                    <div>Est. Cash: <div class="pull-right">{{ calculatedAmount | currency }}</div></div>
+                    <div>Per Minute: <div class="pull-right">{{ perMinute | currency }}/min</div></div>
+                    <div>Per Hour: <div class="pull-right">{{ perHour | currency }}/hour</div></div>
+                    <div>Per Day: <div class="pull-right">{{ perDay | currency }}/day</div></div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <h3>Goals</h3>
+                <div v-for="goal in goals">
+                    <goal :goalid="goal"></goal>
+                </div>
+                <button class="btn btn-info" @click="addGoal">Add Goal</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="goal-block">
+    <div class="row goal-row">
+        <div class="col-lg-4">
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon" id="goal-addon1">$</span>
+                <input type="text" class="form-control" placeholder="Goal" aria-describedby="goal-addon1" v-model="goalAmount">
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="pull-right">
+                <tooltip trigger="hover" placement="top" content="Remove This Goal">
+                    <a href="#" class="glyphicon glyphicon-remove-circle close-calculator" @click.prevent="closeGoal"></a>
+                </tooltip>
+            </div>
+            <div class="row" v-show="goalAmount && ! complete">
+                <div class="col-lg-10">
+                    <div v-show="completeDate">Est. Completion Date: <div class="pull-right">{{ completeDate | moment 'ddd, MMM D, h:mma' }}</div></div>
+                    <div v-show="remainingSeconds">Est. Time to Completion: <div class="pull-right">{{ remainingSeconds | humandate }}</div></div>
+                </div>
+            </div>
+            <div class="row" v-show="goalAmount && complete">
+                <td class="col-lg-8">
+                    <div class="complete">Complete!</div>
+                </td>
+            </div>
+            <div class="progress" style="background-color: white; height: 16px;" v-show="goalAmount">
+                <progressbar :now="progress" type="info" striped label></progressbar>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script src="js/vue.min.js"></script>
+<script src="js/vuestrap.min.js"></script>
+<script src="js/moment.min.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
