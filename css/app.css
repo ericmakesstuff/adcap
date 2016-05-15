@@ -36,3 +36,25 @@
     margin-left: 14px;
 }
 
+html, body {
+    height: 100%;
+}
+
+#wrap {
+    min-height: 100%;
+}
+
+#app {
+    overflow:auto;
+    padding-bottom:60px; /* this needs to be bigger than footer height*/
+    margin-bottom: 20px;
+}
+
+.footer {
+    position: relative;
+    margin-top: -50px; /* negative value of footer height */
+    height: 50px;
+    clear:both;
+    padding-top:14px;
+    text-align:center;
+}
